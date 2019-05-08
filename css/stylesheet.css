@@ -1,0 +1,48 @@
+body {
+    background-color: white;
+}
+
+nav {
+
+    height: 80px;
+}
+nav li {
+    vertical-align: top;
+    text-align: center;
+    height: 50px;
+    width: 300px;
+    padding: 10px;
+    background-color: black;
+    list-style-type: none;
+    display: block;
+}
+
+.logo {
+    height: 50px;
+    width: 50px;
+}
+
+
+
+
+
+
+/* unvisited link */
+nav a:link {
+    color: white;
+}
+
+/* visited link */
+nav a:visited {
+    color: white;
+}
+
+/* mouse over link */
+nav a:hover {
+    color: lightgray;
+}
+
+/* selected link */
+nav a:active {
+    color: white;
+}
