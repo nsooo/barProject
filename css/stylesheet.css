@@ -2,24 +2,30 @@ body {
     background-color: white;
 }
 
-nav {
+.main-container {
+    align-items: center;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+}
 
+
+.logo {
+    display: block;
+    margin-left: -20px;
+    margin-top: -20px;
+    width: 80px;
     height: 80px;
 }
 nav li {
-    vertical-align: top;
-    text-align: center;
+    width: 80px;
     height: 50px;
-    width: 300px;
-    padding: 10px;
+    float: left;
+    text-align: center;
     background-color: black;
     list-style-type: none;
     display: block;
-}
-
-.logo {
-    height: 50px;
-    width: 50px;
+    padding: 20px;
 }
 
 

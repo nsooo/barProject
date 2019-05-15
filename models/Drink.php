@@ -3,11 +3,11 @@
     //DB Stuff
     private $conn;
     private $table = 'cocktails';
-    
+  
     // Drink properties
     public $id;
     public $alcohol;
-    
+  
     // Construct with DB
     public function __construct($db) {
       $this->conn = $db;
@@ -65,46 +65,108 @@
       WHERE
           name = ?
       LIMIT 0,1';
-      
+    
       // Prepare Statement
       $stmt = $this->conn->prepare($query);
-      
+    
       // Bind ID
       $stmt->bindParam(1, $this->name);
-      
+    
       // Execute query
       $stmt->execute();
-      
+    
       $row = $stmt->fetch(PDO::FETCH_ASSOC);
-      
+    
       // Set properties
       $this->name = $row['name'];
       $this->picture_url = $row['picture_url'];
       $this->alcohol = $row['alcohol'];
       $this->amount = $row['amount'];
-      
-    }
     
+    }
+  
     // Create drink
     public function create() {
       // Create query
       $query = 'INSERT INTO ' . $this->table . '
       SET
-        alcohol = :alcohol';
-      
+        name = :name,
+        picture_url = :picture_url';
+    
       // Prepare statement
       $stmt = $this->conn->prepare($query);
-      
+    
       // Clean data
-      $this->alcohol = htmlspecialchars(strip_tags($this->alcohol));
-      
+      $this->name = htmlspecialchars(strip_tags($this->name));
+      $this->picture_url = htmlspecialchars(strip_tags($this->picture_url));
+    
       // Bind data
-      $stmt->bindParam(':alcohol', $this->alcohol);
-      
+      $stmt->bindParam(':name', $this->name);
+      $stmt->bindParam(':picture_url', $this->picture_url);
+    
+      // Execute query
+      if ($stmt->execute()) {
+        return true;
+      }
+      // Print error if something goes wrong
+      printf("Error: %s.\n", $stmt->error);
+      return false;
+    }
+  
+  
+    // Update liquor
+    public function update() {
+      // Create query
+      $query = 'UPDATE ' . $this->table . '
+      SET
+        name = :name,
+        picture_url = :picture_url
+      WHERE
+        id = :id';
+    
+      // Prepare statement
+      $stmt = $this->conn->prepare($query);
+    
+      // Clean data
+      $this->id = htmlspecialchars(strip_tags($this->id));
+      $this->name = htmlspecialchars(strip_tags($this->name));
+      $this->picture_url = htmlspecialchars(strip_tags($this->picture_url));
+    
+      // Bind data
+      $stmt->bindParam(':id', $this->id);
+      $stmt->bindParam(':name', $this->name);
+      $stmt->bindParam(':picture_url', $this->picture_url);
+    
       // Execute query
       if($stmt->execute()){
         return true;
       }
+    
+      // Print error if something goes wrong
+      printf("Error: %s.\n", $stmt->error);
+      return false;
+    }
+    
+  
+    // Delete Drink
+    public function delete() {
+      // Create query
+      $query = 'DELETE FROM ' . $this->table . ' WHERE id = :id';
+    
+      //Prepare statement
+      $stmt = $this->conn->prepare($query);
+    
+      // Clean data
+      $this->id = htmlspecialchars(strip_tags($this->id));
+    
+      // Bind data
+      $stmt->bindParam(':id', $this->id);
+    
+      // Execute query
+      if ($stmt->execute()) {
+        return true;
+      }
+    
       // Print error if something goes wrong
       printf("Error: %s.\n", $stmt->error);
       return false;

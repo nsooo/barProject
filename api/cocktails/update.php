@@ -2,7 +2,7 @@
   // Headers
   header('Access-Control-Allow-Origin: *');
   header('Content-Type: application/json');
-  header('Access-Control-Allow-Methods: POST');
+  header('Access-Control-Allow-Methods: PUT');
   header('Access-Control-Allow-Headers:
     Access-Control-Allow-Headers,
     Content-Type,
@@ -11,29 +11,31 @@
     X-Requested-With');
   
   include_once '../../config/Database.php';
-  include_once '../../models/Genre.php';
+  include_once '../../models/Drink.php';
   
   // Instantiate DB & connect
   $database = new Database();
   $db = $database->connect();
   
-  // Instantiate Genre object
-  $genre = new Genre($db);
+  // Instantiate liquor object
+  $drink = new Drink($db);
   
   // Get raw posted data
   $data = json_decode(file_get_contents("php://input"));
   
-  $genre->alcohol = $data->alcohol;
+  $drink->id = $data->id;
+  $drink->name = $data->name;
+  $drink->picture_url = $data->picture_url;
   
-  // Create genre
-  // TODO: Check if it already exist in db.
-  if ($genre->create()) {
+  // Update liquor
+  // TODO: Check if it exists in db.
+  if ($drink->update()) {
     echo json_encode(
-      array('message' => 'Genre Created')
+      array('message' => 'Drink Updated')
     );
   } else {
     echo json_encode(
-      array('message' => 'Genre Not Created')
+      array('message' => 'Drink Not Updated')
     );
   }
 ?>
