@@ -3,8 +3,8 @@
     // DB Params
     private $host = 'localhost';
     private $db_name = 'bar';
-    private $username = 'root';
-    private $password = '';
+    private $username = 'pi';
+    private $password = 'yooos159';
     private $conn;
     
     // DB Connect

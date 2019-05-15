@@ -1,6 +1,6 @@
 <?php
-  $url = 'http://localhost/bartending/api/cocktails/read.php';
-  //$url = 'http://watsaq.se/api/cocktails/read.php';
+  //$url = 'http://localhost/bartending/api/cocktails/read.php';
+  $url = 'http://watsaq.se/api/cocktails/read.php';
   
   $content = file_get_contents($url);
   $content_array = json_decode($content, true);
