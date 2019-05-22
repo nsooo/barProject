@@ -171,6 +171,77 @@
       printf("Error: %s.\n", $stmt->error);
       return false;
     }
+    
+    
+    //Search for drinks with certain alcohol
+    public function search($liquor, $restricted) {
+  
+      // creates a string containing ?,?,?
+      $liquorListPrepare = implode(',', array_fill(0, count($liquor), '?'));
+      
+      if($restricted === 'false') {
+        $query = 'SELECT
+        name,
+        picture_url,
+        g.alcohol as alcohol
+      FROM
+        ' . $this->table . '
+      LEFT JOIN
+        cocktail_attributes attr
+      ON
+        cocktails.id = attr.cocktail_id
+      LEFT JOIN
+        genres g
+      ON
+        g.id = liquor_id
+      WHERE
+          alcohol IN (' . $liquorListPrepare . ')
+      GROUP BY
+      	cocktails.id';
+  
+      } else if ($restricted === 'true') {
+        $query = 'SELECT
+        name,
+        picture_url,
+        g.alcohol as alcohol
+      FROM
+        ' . $this->table . '
+      LEFT JOIN
+        cocktail_attributes attr
+      ON
+        cocktails.id = attr.cocktail_id
+      LEFT JOIN
+        genres g
+      ON
+        g.id = liquor_id
+      GROUP BY
+      	cocktails.id
+      HAVING
+        COUNT(*) = 1 AND
+        alcohol = ' . $liquorListPrepare;
+      }
+      
+      // Prepare statement
+      $stmt = $this->conn->prepare($query);
+      
+      // Clean data and bind
+      $cleanedLiquorList = array();
+      
+      foreach($liquor as $item){
+        $cleanedItem = htmlspecialchars(strip_tags($item));
+        array_push($cleanedLiquorList, $cleanedItem);
+      }
+      
+      // Bind data
+      for($i = 1; $i<=count($cleanedLiquorList); $i++) {
+        $stmt->bindParam($i, $cleanedLiquorList[$i-1]);
+      }
+      
+      // Execute query
+      $stmt->execute();
+      
+      return $stmt;
+    }
   }
   
 ?>

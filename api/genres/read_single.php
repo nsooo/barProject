@@ -11,7 +11,7 @@
   $db = $database->connect();
   
   // Instantiate Genre object
-  $genre = new Drink($db);
+  $genre = new Genre($db);
   
   // Get ID
   $genre->alcohol = isset($_GET['name']) ? $_GET['name'] : die();
